@@ -59,7 +59,7 @@ class Program {
         String line;
         try
         {
-            StreamReader sr = new StreamReader("C:\\Users\\Nikita\\RiderProjects\\Solution2\\ConsoleApp1\\"+Name+".txt");
+            StreamReader sr = new StreamReader("..\\"+Name+".txt");
             for (int i = 0; i < 26; i++) {
                 line = sr.ReadLine();
                 Temp.Add(line[0], line[2]);
@@ -118,14 +118,16 @@ class Program {
         };
     
 
-    private static List<Rotor> ROTORS = new List<Rotor>() {
-    };
+    private static List<Rotor> ROTORS;
 
     static void Main() {
+        while (true) {
+        ROTORS = new List<Rotor>() {
+        };
         Console.WriteLine("Do you want to use 3 (default) or 4 (kriegsmarine version) rotors?");
         int amount = Int32.Parse(Console.ReadLine());
         for (int i = 0; i < amount; i++) {
-            Console.WriteLine("What should rotor #"+(i+1)+" be?");
+            Console.WriteLine("What should rotor #" + (i + 1) + " be?");
             string Roman = Console.ReadLine();
             Rotor temp = Create(Roman);
             if (temp != null) {
@@ -135,25 +137,31 @@ class Program {
                 i--;
             }
         }
-        string input;
-        string input_data = "";
-        string result = "";
-        int counter = 0;
-        Console.WriteLine("Type the message");
-        while ((input = Console.ReadLine()) != null) {
-            input_data += input;
-        }
-        input_data = input_data.ToUpper();
-        for (int i = 0; i < input_data.Length; i++) {
-            if(char.IsLetter(input_data[i])) {
-                result += Encode(input_data[i]);
-                counter += 1;
-                if (counter % 5 == 0) {
-                    result += " ";
+        
+            string input;
+            string input_data = "";
+            string result = "";
+            int counter = 0;
+            Console.WriteLine("Type the message");
+            while ((input = Console.ReadLine()) != null) {
+                input_data += input;
+            }
+
+            input_data = input_data.ToUpper();
+            for (int i = 0; i < input_data.Length; i++) {
+                if (char.IsLetter(input_data[i])) {
+                    result += Encode(input_data[i]);
+                    counter += 1;
+                    if (counter % 5 == 0) {
+                        result += " ";
+                    }
                 }
             }
+
+            Console.WriteLine(result);
         }
-        Console.WriteLine(result);}
+    }
+
     public static char Rotate(char ch, int n, int z)
     {
         if (ch >= 'A' && ch <= 'Z')
