@@ -1,0 +1,2 @@
+C:\Users\Nikita\RiderProjects\Solution2\ConsoleApp1\bin\Release\net6.0\win-x64\publish\ConsoleApp1.pdb
+C:\Users\Nikita\RiderProjects\Solution2\ConsoleApp1\bin\Release\net6.0\win-x64\publish\ConsoleApp1.exe

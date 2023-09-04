@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.IO;
+using System.Text.RegularExpressions;
 
 class Rotor {
     public IDictionary<char, char> Wiring { get; set; } 
@@ -9,6 +10,7 @@ class Rotor {
     public List<int> Turnover { get; set; }
     public int Setting { get; set; }
     public IDictionary<char, char> Reverse { get; set; }
+    
 
     public Rotor(IDictionary<char, char> Wiring, int Count, List<int> Turnover, int Setting, IDictionary<char, char> Reverse) {
         this.Wiring = Wiring;
@@ -23,6 +25,7 @@ class Rotor {
 }
 
 class Program {
+    static string pat = "[A-Z]-[A-Z]";
     static IDictionary<char, char> PLUG = new Dictionary<char, char>(){
         { 'A', 'A' },
         { 'B', 'B' },
@@ -116,14 +119,88 @@ class Program {
             { 'Y', 'B' },
             { 'Z', 'L' },
         };
-    
 
+    private static List<IDictionary<char, char>> Reflector = new List<IDictionary<char, char>>() {UKW};
+
+    private static IDictionary<char, char> ActiveReflector;
+    
     private static List<Rotor> ROTORS;
 
     static void Main() {
         while (true) {
-        ROTORS = new List<Rotor>() {
+            PLUG = new Dictionary<char, char>(){
+                { 'A', 'A' },
+                { 'B', 'B' },
+                { 'C', 'C' },
+                { 'D', 'D' },
+                { 'E', 'E' },
+                { 'F', 'F' },
+                { 'G', 'G' },
+                { 'H', 'H' },
+                { 'I', 'I' },
+                { 'J', 'J' },
+                { 'K', 'K' },
+                { 'L', 'L' },
+                { 'M', 'M' },
+                { 'N', 'N' },
+                { 'O', 'O' },
+                { 'P', 'P' },
+                { 'Q', 'Q' },
+                { 'R', 'R' },
+                { 'S', 'S' },
+                { 'T', 'T' },
+                { 'U', 'U' },
+                { 'V', 'V' },
+                { 'W', 'W' },
+                { 'X', 'X' },
+                { 'Y', 'Y' },
+                { 'Z', 'Z' },
+            };
+            Regex r = new Regex(pat, RegexOptions.IgnoreCase);
+            Console.WriteLine("How many letters to be connected on the plugboard?(0-13)");
+            int PlugboardCount = Int32.Parse(Console.ReadLine());
+            while (PlugboardCount > 13) {
+                Console.WriteLine("Maximum number of connections is 13!");
+                Console.WriteLine("How many letters to be connected on the plugboard?(0-13)");
+                PlugboardCount = Int32.Parse(Console.ReadLine());
+            }
+            if (PlugboardCount != 0) {
+                Console.WriteLine("Input the plugboard settings(in format \"A-B\"):");
+                for (int i = 0; i < PlugboardCount; i++) {
+                    Console.WriteLine("Current connection: #" + (i + 1));
+                    string Temporary = Console.ReadLine();
+                    if (!r.IsMatch(Temporary)) {
+                        i--;
+                        Console.WriteLine("Please input in format \"A-B\" ");
+                        continue;
+                    }
+                    
+                    if (PLUG[Temporary[0]] == Temporary[0] && PLUG[Temporary[2]] == Temporary[2]) {
+                        PLUG[Temporary[0]] = Temporary[2];
+                        PLUG[Temporary[2]] = Temporary[0];
+                    }
+                    else {
+                        Console.WriteLine("You already set this letter on the plugboard!");
+                        i--;
+                    }
+                }
+            }
+
+
+
+            ROTORS = new List<Rotor>() {
         };
+            Console.WriteLine("What reflector do you want to use?(Input number)");
+            Console.WriteLine("#1: UKW");
+            int ReflectorInput = Int32.Parse(Console.ReadLine());
+            while (ReflectorInput > Reflector.Count) {
+                Console.WriteLine("Reflector with that number does not exist!");
+                Console.WriteLine("What reflector do you want to use?");
+                Console.WriteLine("#1: UKW");
+                ReflectorInput = Int32.Parse(Console.ReadLine());
+            }
+
+            ActiveReflector = Reflector[ReflectorInput-1];
         Console.WriteLine("Do you want to use 3 (default) or 4 (kriegsmarine version) rotors?");
         int amount = Int32.Parse(Console.ReadLine());
         for (int i = 0; i < amount; i++) {
@@ -176,6 +253,9 @@ class Program {
         while (k < ROTORS.Count) {
             if (ROTORS[k].Turnover.Contains(ROTORS[k].Count)&& k!=ROTORS.Count-1) {
                 ROTORS[k + 1].Count += 1;
+                if (ROTORS[k+1].Turnover.Contains(ROTORS[k+1].Count+1)&& k+1!=ROTORS.Count-1) {
+                    ROTORS[k + 1].Count += 1;
+                }
             }
 
             if (ROTORS[k].Count > 25) {
@@ -191,7 +271,7 @@ class Program {
 
         }
 
-        LETT = UKW[LETT];
+        LETT = ActiveReflector[LETT];
         for (int i = ROTORS.Count()-1; i >= 0; i--) {
             LETT = ROTORS[i].Reverse[LETT];
             LETT = Rotate(LETT, -ROTORS[i].Count,-ROTORS[i].Setting);

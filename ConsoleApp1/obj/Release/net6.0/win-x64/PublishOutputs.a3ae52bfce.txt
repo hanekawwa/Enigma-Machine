@@ -1,0 +1,2 @@
+C:\Users\Nikita\RiderProjects\Solution2\ConsoleApp1\bin\ConsoleApp1.pdb
+C:\Users\Nikita\RiderProjects\Solution2\ConsoleApp1\bin\ConsoleApp1.exe
