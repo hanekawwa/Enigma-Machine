@@ -33,3 +33,5 @@ Two Versions Available:
   - Uses the thin reflectors.
   - Configured with 4 rotors. The 4th rotor is thin (either Beta or Gamma).
     - The 4th rotor doesn't auto-rotate and is set manually.
+
+(The .exe file as requested is located in bin folder, which is in ConsoleApp1 folder and is named "Enigma-Machine.exe"
